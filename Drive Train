@@ -1,3 +1,4 @@
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -126,43 +127,45 @@ public class Robot extends TimedRobot {
       solenoid.set(DoubleSolenoid.Value.kReverse);
     }
   
-    if (xbox.getStartButton()){
-      comp.enableDigital();
-    } else if (xbox.getStartButton()){
+    if (xbox.getStartButtonPressed()){
       comp.disable();
+    } else if (xbox.getStartButtonReleased()){
+      comp.enableDigital();
     }
-  }
+  
 {
     
 //Arm Outward
+if (xbox.getBButtonPressed()){
+  armextensionMotor.set(.5);
+} else if (xbox.getBButtonReleased()){
+  armextensionMotor.set(0);
+}
 
-    if (xbox.getYButtonPressed()){
-      armextensionMotor.set(.5);
-    } else if (xbox.getYButtonReleased()){
-      armextensionMotor.set(0);
-    }
 
 //Arm Inward
-    if (xbox.getXButtonPressed()){
+    if (xbox.getAButtonPressed()){
       armextensionMotor.set(-.5);
-    } else if (xbox.getXButtonReleased()){
+    } else if (xbox.getAButtonReleased()){
       armextensionMotor.set(0);
     }
 
 //Arm Up
 
-    if (xbox.getAButtonPressed()){
+    if (xbox.getYButtonPressed()){
       armliftMotor.set(.3);
-    } else if (xbox.getAButtonReleased()){
+    } else if (xbox.getYButtonReleased()){
       armliftMotor.set(0);
     }
 
+
 //Arm Down
-    if (xbox.getBButtonPressed()){
+    if (xbox.getXButtonPressed()){
       armliftMotor.set(-.3);
-    } else if (xbox.getBButtonReleased()){
+    } else if (xbox.getXButtonReleased()){
       armliftMotor.set(0);
     }
+  }
 }
 
 
