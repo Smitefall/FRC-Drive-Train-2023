@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-//import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -39,11 +39,13 @@ public class Robot extends TimedRobot {
 
    //Arm Motors
    private final WPI_VictorSPX armextensionMotor = new WPI_VictorSPX(5);
-   private final WPI_VictorSPX armliftMotor = new WPI_VictorSPX(6);
+   private final WPI_VictorSPX armliftMotor1 = new WPI_VictorSPX(6);
+   private final WPI_VictorSPX armliftMotor2 = new WPI_VictorSPX(7);
 
    //Speed Controller Groups
    private final MotorControllerGroup rightMotorControllerGroup = new MotorControllerGroup(rightMotor1, rightMotor2);
    private final MotorControllerGroup leftMotorControllerGroup = new MotorControllerGroup(leftMotor1, leftMotor2);
+   private final MotorControllerGroup armMotorControllerGroup = new MotorControllerGroup(armliftMotor1, armliftMotor2);
 
    //Drive Train
 
@@ -91,21 +93,16 @@ public class Robot extends TimedRobot {
   }
 
   /** This function is called periodically during autonomous. */
-/**  @Override
+  @Override
   public void autonomousPeriodic() {
 
-    if (Timer.getMatchTime() < 2.5) {
-      drivetrain.arcadeDrive(0, -1);
+    if (Timer.getMatchTime() < 3) {
+      drivetrain.arcadeDrive(0, .75);
     } else {
       drivetrain.stopMotor();
     }
-  if (Timer.getMatchTime() < 2){
-    shooterMotorControllerGroup.set(1);
-  }else{
-      shooterMotorControllerGroup.set(0);
-    }
   }
-*/
+
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
@@ -118,7 +115,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-        drivetrain.arcadeDrive(stick.getZ() * 0.8, -stick.getY(), true);
+        drivetrain.arcadeDrive(stick.getZ() * 0.6, -stick.getY(), true);
 
 
     if (xbox.getLeftBumperPressed()){
@@ -152,18 +149,18 @@ if (xbox.getBButtonPressed()){
 
 //Arm Up
 
-    if (xbox.getYButtonPressed()){
-      armliftMotor.set(.3);
-    } else if (xbox.getYButtonReleased()){
-      armliftMotor.set(0);
+    if (xbox.getXButtonPressed()){
+      armMotorControllerGroup.set(.8);
+    } else if (xbox.getXButtonReleased()){
+      armMotorControllerGroup.set(0);
     }
 
 
 //Arm Down
-    if (xbox.getXButtonPressed()){
-      armliftMotor.set(-.3);
-    } else if (xbox.getXButtonReleased()){
-      armliftMotor.set(0);
+    if (xbox.getYButtonPressed()){
+      armMotorControllerGroup.set(-1);
+    } else if (xbox.getYButtonReleased()){
+      armMotorControllerGroup.set(0);
     }
   }
 }
